@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import MacrosCalculator as mc
 
 def validate_entry(input):
@@ -8,14 +9,17 @@ def validate_entry(input):
         input1 = float(input)
     except ValueError:
         return False
-    return 0 <= input1 <= 100
+    return 0.00 <= input1 <= 300
 
-def check_weight(input):
-    if input < 15:
-        result = False
+def check_entries():
+    if float(entry1.get()) < 15:
+        messagebox.showerror("Error", "Minimum weight is 15 kg")
+    elif float(entry2.get()) < 50:
+        messagebox.showerror("Error", "Minimum height is 50 cm")
+    elif float(entry3.get()) < 18:
+        messagebox.showerror("Error", "Calculator not recommended for minors")
     else:
-        result = True
-    return result
+        calculate()
 
 def calculate():
     weight = float(entry1.get())
@@ -60,7 +64,7 @@ entry3 = Entry(window, validate = "key", validatecommand=vcmd)
 label4 = Label(window, text = "Select your gender: ")
 label5 = Label(window, text = "Select your activity level: ")
 label6 = Label(window, text = "Select your goal: ")
-button1 = Button(window, text = "Calculate", command=check_weight)
+button1 = Button(window, text = "Calculate", command=check_entries)
 
 label1.pack()
 entry1.pack()
