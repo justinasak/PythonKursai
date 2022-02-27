@@ -10,10 +10,11 @@ class MainApplication(Tk):
 
         self.title("Macros App")
         self.geometry("500x600")
+        self.protocol('WM_DELETE_WINDOW', self.exiting)
 
         self.tab_parent = ttk.Notebook(self)
 
-        self.food_window = food.Food(self.tab_parent)
+        self.food_window = food.AddFood(self.tab_parent)
         self.progress_window = cpr.Progress(self.tab_parent)
         self.window = mcalc.MacrosCalc(self.tab_parent)
 
@@ -31,6 +32,7 @@ class MainApplication(Tk):
             self.destroy()
         else:
             pass
+
 
 if __name__ == '__main__':
     app = MainApplication()

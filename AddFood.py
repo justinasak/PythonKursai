@@ -1,50 +1,69 @@
 from tkinter import *
 from tkinter import messagebox, ttk
+import Food as fd
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-class Food(ttk.Frame):
+engine = create_engine('sqlite:///macros.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
+class AddFood(ttk.Frame):
     def __init__(self, container):
         super().__init__()
+
         labelA = ttk.Label(self, text = "Add Food")
         labelA.configure(font=("Helvetica", 18, "bold"))
         labelA.pack()
 
-        value1 = StringVar(self, 1)
-        values1 = {"Breakfast": 1, "Lunch": 2, "Dinner" : 3, "Snack" : 4}
-        label = Label(self, text = "Category")
-        label1 = Label(self, text="Description")
-        entry1 = Entry(self)
-        label6 = Label(self, text="Nutrition facts per 100g")
-        label6.configure(font=("Helvetica", 16, "bold"))
-        label2 = Label(self, text="Calories (kcal)")
-        entry2 = Entry(self)
-        label3 = Label(self, text="Fat (g)")
-        entry3 = Entry(self)
-        label4 = Label(self, text="Carbohydrate (g)")
-        entry4 = Entry(self)
-        label5 = Label(self, text="Protein (g)")
-        entry5 = Entry(self)
-        label7 = Label(self, text="Portion (g)")
-        label7.configure(font=("Helvetica", 16, "bold"))
-        entry7 = Entry(self)
-        button1 = Button(self, text="Save", command=self.save)
+        self.value1 = StringVar(self, 1)
+        self.values1 = {"Breakfast": 1, "Lunch": 2, "Dinner" : 3, "Snack" : 4}
+        self.label = Label(self, text = "Category")
+        self.label1 = Label(self, text="Description")
+        self.entry1 = Entry(self)
+        self.label6 = Label(self, text="Nutrition facts per 100g")
+        self.label6.configure(font=("Helvetica", 16, "bold"))
+        self.label2 = Label(self, text="Calories (kcal)")
+        self.entry2 = Entry(self)
+        self.label3 = Label(self, text="Fat (g)")
+        self.entry3 = Entry(self)
+        self.label4 = Label(self, text="Carbohydrate (g)")
+        self.entry4 = Entry(self)
+        self.label5 = Label(self, text="Protein (g)")
+        self.entry5 = Entry(self)
+        self.label7 = Label(self, text="Portion (g)")
+        self.label7.configure(font=("Helvetica", 16, "bold"))
+        self.entry7 = Entry(self)
+        self.button1 = Button(self, text="Add", command=self.save)
 
-        label.pack()
-        for (text, value) in values1.items():
-            Radiobutton(self, text=text, variable=value1, value=value).pack()
-        label1.pack()
-        entry1.pack()
-        label6.pack()
-        label2.pack()
-        entry2.pack()
-        label3.pack()
-        entry3.pack()
-        label4.pack()
-        entry4.pack()
-        label5.pack()
-        entry5.pack()
-        label7.pack()
-        entry7.pack()
-        button1.pack()
+        self.label.pack()
+        for (text, value) in self.values1.items():
+            Radiobutton(self, text=text, variable=self.value1, value=value).pack()
+        self.label1.pack()
+        self.entry1.pack()
+        self.label6.pack()
+        self.label2.pack()
+        self.entry2.pack()
+        self.label3.pack()
+        self.entry3.pack()
+        self.label4.pack()
+        self.entry4.pack()
+        self.label5.pack()
+        self.entry5.pack()
+        self.label7.pack()
+        self.entry7.pack()
+        self.button1.pack()
 
     def save(self):
-        pass
+        food = fd.Food(self.entry1.get(), self.value1.get(), float(self.entry2.get()),
+                       float(self.entry3.get()), float(self.entry4.get()),
+                       float(self.entry5.get()), float(self.entry7.get()))
+        session.add(food)
+        session.commit()
+        messagebox.showinfo("Success", "Successfully added")
+        self.entry1.delete(0, 'end')
+        self.entry2.delete(0, 'end')
+        self.entry3.delete(0, 'end')
+        self.entry4.delete(0, 'end')
+        self.entry5.delete(0, 'end')
+        self.entry7.delete(0, 'end')
