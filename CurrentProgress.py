@@ -1,5 +1,5 @@
 import tkinter
-from tkinter import messagebox, ttk, Button
+from tkinter import ttk
 from Goal import Goal as gl
 from Food import Food as fd
 from sqlalchemy import create_engine, func
