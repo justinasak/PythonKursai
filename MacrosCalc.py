@@ -68,7 +68,6 @@ class MacrosCalc(ttk.Frame):
             Radiobutton(self, text=text, variable=self.value3, value=value).pack()
 
         self.button1.pack()
-        #self.label7.pack()
 
     def validate_entry(self, input):
         if input == "":
@@ -86,12 +85,6 @@ class MacrosCalc(ttk.Frame):
             messagebox.showerror("Error", "Minimum height is 50 cm")
         elif float(self.entry3.get()) < 18:
             messagebox.showerror("Error", "Calculator not recommended for minors")
-        # else:
-        #     if self.calculate() is None:
-        #         pass
-        #     else:
-        #         # dar kart priskaiciavus vel prideda reiksme
-        #         self.calculate().pack()
         else:
             self.calculate()
 
@@ -107,12 +100,9 @@ class MacrosCalc(ttk.Frame):
         answer = messagebox.askquestion("Recommended kcal",
                                         f"Your recommended amount per day is {self.result} kcal. Do you want to save it?")
         if answer == 'no':
-            #self.label8 = None
             pass
         else:
-            #self.label8 = Label(self, text=self.result)
             self.save()
-        #return self.label8
 
     def save(self):
         goal = gl.Goal(float(self.result))

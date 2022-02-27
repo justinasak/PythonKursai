@@ -3,18 +3,21 @@ from tkinter import messagebox, ttk
 import Food as fd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text as sa_text
 
 engine = create_engine('sqlite:///macros.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
 class AddFood(ttk.Frame):
-    def __init__(self, container):
+    def __init__(self, container=[]):
         super().__init__()
 
         labelA = ttk.Label(self, text = "Add Food")
         labelA.configure(font=("Helvetica", 18, "bold"))
         labelA.pack()
+
+        vcmd = (self.register(self.validate_entry), "%P")
 
         self.value1 = StringVar(self, 1)
         self.values1 = {"Breakfast": 1, "Lunch": 2, "Dinner" : 3, "Snack" : 4}
@@ -24,16 +27,16 @@ class AddFood(ttk.Frame):
         self.label6 = Label(self, text="Nutrition facts per 100g")
         self.label6.configure(font=("Helvetica", 16, "bold"))
         self.label2 = Label(self, text="Calories (kcal)")
-        self.entry2 = Entry(self)
+        self.entry2 = Entry(self, validate="key", validatecommand=vcmd)
         self.label3 = Label(self, text="Fat (g)")
-        self.entry3 = Entry(self)
+        self.entry3 = Entry(self, validate="key", validatecommand=vcmd)
         self.label4 = Label(self, text="Carbohydrate (g)")
-        self.entry4 = Entry(self)
+        self.entry4 = Entry(self, validate="key", validatecommand=vcmd)
         self.label5 = Label(self, text="Protein (g)")
-        self.entry5 = Entry(self)
+        self.entry5 = Entry(self, validate="key", validatecommand=vcmd)
         self.label7 = Label(self, text="Portion (g)")
         self.label7.configure(font=("Helvetica", 16, "bold"))
-        self.entry7 = Entry(self)
+        self.entry7 = Entry(self, validate="key", validatecommand=vcmd)
         self.button1 = Button(self, text="Add", command=self.save)
 
         self.label.pack()
@@ -67,3 +70,13 @@ class AddFood(ttk.Frame):
         self.entry4.delete(0, 'end')
         self.entry5.delete(0, 'end')
         self.entry7.delete(0, 'end')
+
+    def validate_entry(self, input):
+        if input == "":
+            return True
+        try:
+            input1 = float(input)
+        except ValueError:
+            return False
+        return 0.00 <= input1 <= 500000
+
