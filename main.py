@@ -37,6 +37,13 @@ def calculate():
     else:
         pass
 
+def exiting():
+    answer = messagebox.askyesno("Exit", "Are you sure you want to leave?")
+    if answer is True:
+        window.destroy()
+    else:
+        pass
+
 window = Tk()
 window.title("Macros Calculator")
 window.geometry("500x530")
@@ -71,6 +78,15 @@ label4 = Label(window, text = "Select your gender: ")
 label5 = Label(window, text = "Select your activity level: ")
 label6 = Label(window, text = "Select your goal: ")
 button1 = Button(window, text = "Calculate", command=check_entries)
+window.bind("<Return>", lambda event: check_entries())
+
+meniu = Menu(window)
+window.config(menu=meniu)
+submeniu = Menu(meniu, tearoff=0)
+
+meniu.add_cascade(label = "Menu", menu=submeniu)
+submeniu.add_command(label = "Iseiti", command=exiting)
+window.bind("<Escape>", lambda event: exiting())
 
 label1.pack()
 entry1.pack()
