@@ -13,7 +13,7 @@ class AddFood(ttk.Frame):
     def __init__(self, container=[]):
         super().__init__()
         #self.configure(background="#b2e0a4")
-        labelA = ttk.Label(self, text = "Add Food")
+        labelA = ttk.Label(self, text = "Add Meal")
         labelA.configure(font=("Helvetica", 18, "bold"))
         labelA.pack()
 

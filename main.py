@@ -19,7 +19,7 @@ class MainApplication(Tk):
         self.progress_window = cpr.Progress(self.tab_parent)
 
         self.tab_parent.add(self.window, text="Macros Calculator")
-        self.tab_parent.add(self.food_window, text="Add Food")
+        self.tab_parent.add(self.food_window, text="Add Meals")
         self.tab_parent.add(self.progress_window, text="Current progress")
 
         self.tab_parent.pack(expand=1, fill='both')

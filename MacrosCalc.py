@@ -84,7 +84,7 @@ class MacrosCalc(ttk.Frame):
         elif float(self.entry2.get()) < 50:
             messagebox.showerror("Error", "Minimum height is 50 cm")
         elif float(self.entry3.get()) < 18:
-            messagebox.showerror("Error", "Calculator not recommended for minors")
+            messagebox.showerror("Error", "Calculator is recommended for persons over age of 18")
         else:
             self.calculate()
 

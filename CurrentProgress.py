@@ -21,13 +21,11 @@ class Progress(tkinter.Frame):
         except AttributeError:
             top_frame = tkinter.Frame(self)
             top_frame.grid(row=0, column=0)
-            ttk.Label(top_frame, text="To see the progress you need to calculate the goal using macros calculator", font=("Helvetica", 18, "bold")).grid(row=0, column=2)
+            ttk.Label(top_frame, text="First you need to calculate the goal", font=("Helvetica", 18, "bold")).grid(row=0, column=2)
 
     def add_attributes(self, goal):
         top_frame = tkinter.Frame(self)
         top_frame.grid(row=0, column=0)
-        foods_frame = tkinter.Frame(self)
-        foods_frame.grid(row=1, column=0)
 
         ttk.Label(top_frame, text = "Daily Caloric Requirement",font=("Helvetica", 16, "bold")).grid(row=0, column=2)
         ttk.Label(top_frame, text=f"{round(goal.bmr,2)} kcal").grid(row=1, column=2)
@@ -42,7 +40,19 @@ class Progress(tkinter.Frame):
         ttk.Label(top_frame, text="Fat").grid(row=3, column=3)
         ttk.Label(top_frame, text=f"{round(goal.bmr * 0.3 / 9, 2)} g").grid(row=4, column=3)
         ttk.Label(top_frame, text=f"{round(goal.bmr * 0.3, 2)} kcal").grid(row=5, column=3)
+        if session.query(fd).first() is None:
+            example_frame = tkinter.Frame(self)
+            example_frame.grid(row=1, column=0)
+            ttk.Label(example_frame, text="To see the progress you need to add your meals",
+                      font=("Helvetica", 18, "bold")).grid(row=0, column=2)
+        else:
+            self.add_results(goal)
 
+
+    def add_results(self, goal):
+
+        foods_frame = tkinter.Frame(self)
+        foods_frame.grid(row=1, column=0)
         categories = [ "Breakfast Total",
                        "Lunch Total",
                        "Dinner Total",
