@@ -1,114 +1,41 @@
 from tkinter import *
-from tkinter import messagebox
-import MacrosCalculator as mc
+from tkinter import messagebox, ttk
+import AddFood as food
+import CurrentProgress as cpr
+import MacrosCalc as mcalc
 
-def validate_entry(input):
-    if input == "":
-        return True
-    try:
-        input1 = float(input)
-    except ValueError:
-        return False
-    return 0.00 <= input1 <= 300
+class MainApplication(Tk):
+    def __init__(self):
+        super().__init__()
 
-def check_entries():
-    if float(entry1.get()) < 15:
-        messagebox.showerror("Error", "Minimum weight is 15 kg")
-    elif float(entry2.get()) < 50:
-        messagebox.showerror("Error", "Minimum height is 50 cm")
-    elif float(entry3.get()) < 18:
-        messagebox.showerror("Error", "Calculator not recommended for minors")
-    else:
-        calculate()
+        self.title("Macros App")
+        self.geometry("500x600")
 
-def calculate():
-    weight = float(entry1.get())
-    height = float(entry2.get())
-    age = float(entry3.get())
-    gender = float(value1.get())
-    alvl = float(value2.get())
-    goal = float(value3.get())
-    calculation = mc.MacrosCalculator(weight, height, age, gender, alvl, goal)
-    result = calculation.calculatebmr()
-    answer = messagebox.askquestion("Recommended kcal", f"Your recommended amount per day is {result} kcal. Do you want to continue?")
-    if answer == 'yes':
-        # save to db or sth similar
-        pass
-    else:
-        pass
+        self.tab_parent = ttk.Notebook(self)
 
-def exiting():
-    answer = messagebox.askyesno("Exit", "Are you sure you want to leave?")
-    if answer is True:
-        window.destroy()
-    else:
-        pass
+        self.food_window = food.Food(self.tab_parent)
+        self.progress_window = cpr.Progress(self.tab_parent)
+        self.window = mcalc.MacrosCalc(self.tab_parent)
 
-window = Tk()
-window.title("Macros Calculator")
-window.geometry("500x530")
+        self.tab_parent.add(self.food_window, text="Add Food")
+        self.tab_parent.add(self.progress_window, text="Current progress")
+        self.tab_parent.add(self.window, text="Macros Calculator")
 
-value1 = StringVar(window, 5)
-value2 = StringVar(window, 1.2)
-value3 = StringVar(window, 0)
-result = ""
+        self.tab_parent.pack(expand=1, fill='both')
+        self.bind("<Escape>", lambda event: self.exiting())
 
-values1 = {"Female" : -161, "Male" : 5}
 
-values2 = {
-            "Sedentary (little or no exercise)" : 1.2,
-            "Lightly active (light exercise/sports 1-3 days/week)" : 1.375,
-            "Moderately active (moderate exercise/sports 3-5 days/week)" : 1.55,
-            "Very active (hard exercise/sports 6-7 days a week)" : 1.725,
-            "If you are extra active (very hard exercise/sports & a physical job)" : 1.9
-          }
+    def exiting(self):
+        answer = messagebox.askyesno("Exit", "Are you sure you want to leave?")
+        if answer is True:
+            self.destroy()
+        else:
+            pass
 
-values3 = {"Lose weight" : -500,
-           "Maintain the same weight" : 0,
-           "Gain weight" : 500}
+if __name__ == '__main__':
+    app = MainApplication()
+    app.mainloop()
 
-vcmd = (window.register(validate_entry), "%P")
-label1 = Label(window, text = "Insert your weight (kg):")
-entry1 = Entry(window, validate = "key", validatecommand=vcmd)
-label2 = Label(window, text = "Insert your height (cm):")
-entry2 = Entry(window, validate = "key", validatecommand=vcmd)
-label3 = Label(window, text = "Insert your age:")
-entry3 = Entry(window, validate = "key", validatecommand=vcmd)
-label4 = Label(window, text = "Select your gender: ")
-label5 = Label(window, text = "Select your activity level: ")
-label6 = Label(window, text = "Select your goal: ")
-button1 = Button(window, text = "Calculate", command=check_entries)
-window.bind("<Return>", lambda event: check_entries())
 
-meniu = Menu(window)
-window.config(menu=meniu)
-submeniu = Menu(meniu, tearoff=0)
 
-meniu.add_cascade(label = "Menu", menu=submeniu)
-submeniu.add_command(label = "Iseiti", command=exiting)
-window.bind("<Escape>", lambda event: exiting())
 
-label1.pack()
-entry1.pack()
-label2.pack()
-entry2.pack()
-label3.pack()
-entry3.pack()
-label4.pack()
-
-for (text, value) in values1.items():
-    Radiobutton(window, text = text, variable = value1, value = value).pack()
-
-label5.pack()
-
-for (text, value) in values2.items():
-    Radiobutton(window, text = text, variable = value2, value = value).pack()
-
-label6.pack()
-
-for (text, value) in values3.items():
-    Radiobutton(window, text = text, variable = value3, value = value).pack()
-
-button1.pack()
-
-window.mainloop()
