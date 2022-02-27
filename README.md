@@ -1,14 +1,14 @@
-#Baigiamasis darbas, Python pradedančiųjų kursai
+# Baigiamasis darbas, Python pradedančiųjų kursai
 
-##Macros calculation app
+## Macros calculation app
 
-###Description
+### Description
 
 This app is used for counting the calorie goal (Basal Metabolic Rate) and registering the food intake.
 Based on the user's inserted values, such as weight, height, age, gender, activity level,
 and the weight goal, the app calculates the goal of calories and recommended macros (carbohydrates, protein, fat) intake.
 Tkinter, sqlalchemy libraries are used to develop the app.
-###Overview
+### Overview
 
 #### Macros Calculator
 
@@ -59,7 +59,7 @@ After successfull insert, message pops up:
 
 <img src="screenshots/9.png" alt="drawing" width="200"/>
 
-###Additional validations and functionality
+### Additional validations and functionality
 When the user calculates the goal or inserts the food, app does not refresh automatically.
 For this case, to see all the newest info from database, refresh button has been made in the menu:
 
