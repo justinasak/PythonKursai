@@ -1,6 +1,13 @@
 from tkinter import *
 from tkinter import messagebox, ttk
 import MacrosCalculator as mc
+import Goal as gl
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine('sqlite:///macros.db')
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class MacrosCalc(ttk.Frame):
     def __init__(self, container):
@@ -61,7 +68,7 @@ class MacrosCalc(ttk.Frame):
             Radiobutton(self, text=text, variable=self.value3, value=value).pack()
 
         self.button1.pack()
-        self.label7.pack()
+        #self.label7.pack()
 
     def validate_entry(self, input):
         if input == "":
@@ -79,12 +86,14 @@ class MacrosCalc(ttk.Frame):
             messagebox.showerror("Error", "Minimum height is 50 cm")
         elif float(self.entry3.get()) < 18:
             messagebox.showerror("Error", "Calculator not recommended for minors")
+        # else:
+        #     if self.calculate() is None:
+        #         pass
+        #     else:
+        #         # dar kart priskaiciavus vel prideda reiksme
+        #         self.calculate().pack()
         else:
-            if self.calculate() is None:
-                pass
-            else:
-                # dar kart priskaiciavus vel prideda reiksme
-                self.calculate().pack()
+            self.calculate()
 
     def calculate(self):
         weight = float(self.entry1.get())
@@ -96,9 +105,17 @@ class MacrosCalc(ttk.Frame):
         calculation = mc.MacrosCalculator(weight, height, age, gender, alvl, goal)
         self.result = calculation.calculatebmr()
         answer = messagebox.askquestion("Recommended kcal",
-                                        f"Your recommended amount per day is {self.result} kcal. Do you want to continue?")
+                                        f"Your recommended amount per day is {self.result} kcal. Do you want to save it?")
         if answer == 'no':
-            self.label8 = None
+            #self.label8 = None
+            pass
         else:
-            self.label8 = Label(self, text=self.result)
-        return self.label8
+            #self.label8 = Label(self, text=self.result)
+            self.save()
+        #return self.label8
+
+    def save(self):
+        goal = gl.Goal(float(self.result))
+        session.add(goal)
+        session.commit()
+        messagebox.showinfo("Success", "Successfully saved")

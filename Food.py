@@ -4,7 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 engine = create_engine('sqlite:///macros.db')
 Base = declarative_base()
 
-
 class Food(Base):
     __tablename__ = 'Food'
     id = Column(Integer, primary_key=True)
