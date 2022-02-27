@@ -29,7 +29,13 @@ def calculate():
     alvl = float(value2.get())
     goal = float(value3.get())
     calculation = mc.MacrosCalculator(weight, height, age, gender, alvl, goal)
-    result = StringVar(window, calculation.calculatebmr())
+    result = calculation.calculatebmr()
+    answer = messagebox.askquestion("Recommended kcal", f"Your recommended amount per day is {result} kcal. Do you want to continue?")
+    if answer == 'yes':
+        # save to db or sth similar
+        pass
+    else:
+        pass
 
 window = Tk()
 window.title("Macros Calculator")

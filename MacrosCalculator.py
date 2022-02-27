@@ -9,4 +9,4 @@ class MacrosCalculator:
 
 
     def calculatebmr(self):
-        print ((10 * self.weight + 6.25 * self.height - 5 * self.age + self.gender) * self.alvl + self.goal)
+        return ((10 * self.weight + 6.25 * self.height - 5 * self.age + self.gender) * self.alvl + self.goal)
